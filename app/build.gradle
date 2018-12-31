@@ -1,0 +1,45 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion rootProject.ext.CompileSdk
+    buildToolsVersion rootProject.ext.BuildTools
+
+    android.applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            def appName = parent.name
+            def fileName = appName.replace(" ", "_")
+            outputFileName = "$fileName-v${variant.versionName}.apk"
+       }
+    }
+
+    defaultConfig {
+        applicationId "com.dm.wallpaper.board.sample"
+        minSdkVersion rootProject.ext.MinSdk
+        targetSdkVersion rootProject.ext.TargetSdk
+        versionCode 1
+        versionName "1.0"
+        vectorDrawables.useSupportLibrary = true
+        manifestPlaceholders = [manifestApplicationId: "${applicationId}",
+                                onesignal_app_id: "068baede-1a04-432c-b8c4-6fc59bc84500",
+                                onesignal_google_project_number: "745634907655"]
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+}
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    // Library
+    implementation project(':library')
+}
